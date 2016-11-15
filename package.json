@@ -1,6 +1,6 @@
 {
   "name": "redact-secrets",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Deeply iterate over an object and redact secret values by replacing them with a predefined string",
   "main": "index.js",
   "dependencies": {
@@ -36,5 +36,9 @@
   "bugs": {
     "url": "https://github.com/watson/redact-secrets/issues"
   },
-  "homepage": "https://github.com/watson/redact-secrets#readme"
+  "homepage": "https://github.com/watson/redact-secrets#readme",
+  "coordinates": [
+    55.6810347,
+    12.5644174
+  ]
 }
