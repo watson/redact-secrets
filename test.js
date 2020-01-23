@@ -1,11 +1,9 @@
-'use strict'
-
-var test = require('tape')
-var clone = require('clone')
-var redact = require('./')
+const test = require('tape')
+const clone = require('clone')
+const redact = require('./')
 
 test('redact.map', function (t) {
-  var input = {
+  const input = {
     foo: 'non-secret',
     secret: 'secret',
     sub1: {
@@ -18,7 +16,7 @@ test('redact.map', function (t) {
     }]
   }
 
-  var expected = {
+  const expected = {
     foo: 'non-secret',
     secret: 'redacted',
     sub1: {
@@ -31,8 +29,50 @@ test('redact.map', function (t) {
     }]
   }
 
-  var orig = clone(input)
-  var result = redact('redacted').map(input)
+  const orig = clone(input)
+  const result = redact('redacted').map(input)
+
+  t.deepEqual(result, expected)
+  t.deepEqual(input, orig)
+  t.end()
+})
+
+test('redact.map (user provided keys/values)', function (t) {
+  const input = {
+    foo: 'non-secret',
+    secret: 'secret',
+    sub1: {
+      foo: 'non-secret',
+      password: 'secret'
+    },
+    sub2: [{
+      foo: 'non-secret',
+      token: 'secret'
+    }],
+    userProvidedSecretKey: '123',
+    abc: 'userProvidedSecretValue'
+  }
+
+  const expected = {
+    foo: 'non-secret',
+    secret: 'redacted',
+    sub1: {
+      foo: 'non-secret',
+      password: 'redacted'
+    },
+    sub2: [{
+      foo: 'non-secret',
+      token: 'redacted'
+    }],
+    userProvidedSecretKey: 'redacted',
+    abc: 'redacted'
+  }
+
+  const orig = clone(input)
+  const result = redact('redacted', {
+    keys: [/userProvidedSecretKey/i],
+    values: [/userProvidedSecretValue/i]
+  }).map(input)
 
   t.deepEqual(result, expected)
   t.deepEqual(input, orig)
@@ -40,7 +80,7 @@ test('redact.map', function (t) {
 })
 
 test('redact.forEach', function (t) {
-  var input = {
+  const input = {
     foo: 'non-secret',
     secret: 'secret',
     sub1: {
@@ -53,7 +93,7 @@ test('redact.forEach', function (t) {
     }]
   }
 
-  var expected = {
+  const expected = {
     foo: 'non-secret',
     secret: 'redacted',
     sub1: {
@@ -66,7 +106,48 @@ test('redact.forEach', function (t) {
     }]
   }
 
-  var result = redact('redacted').forEach(input)
+  const result = redact('redacted').forEach(input)
+
+  t.equal(result, undefined)
+  t.deepEqual(input, expected)
+  t.end()
+})
+
+test('redact.forEach (user provided keys/values)', function (t) {
+  const input = {
+    foo: 'non-secret',
+    secret: 'secret',
+    sub1: {
+      foo: 'non-secret',
+      password: 'secret'
+    },
+    sub2: [{
+      foo: 'non-secret',
+      token: 'secret'
+    }],
+    userProvidedSecretKey: '123',
+    abc: 'userProvidedSecretValue'
+  }
+
+  const expected = {
+    foo: 'non-secret',
+    secret: 'redacted',
+    sub1: {
+      foo: 'non-secret',
+      password: 'redacted'
+    },
+    sub2: [{
+      foo: 'non-secret',
+      token: 'redacted'
+    }],
+    userProvidedSecretKey: 'redacted',
+    abc: 'redacted'
+  }
+
+  const result = redact('redacted', {
+    keys: [/userProvidedSecretKey/i],
+    values: [/userProvidedSecretValue/i]
+  }).forEach(input)
 
   t.equal(result, undefined)
   t.deepEqual(input, expected)
