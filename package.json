@@ -8,12 +8,16 @@
     "traverse": "^0.6.6"
   },
   "devDependencies": {
+    "@types/is-secret": "^1.2.0",
+    "@types/traverse": "^0.6.32",
     "clone": "^2.0.0",
     "standard": "^8.5.0",
-    "tape": "^4.6.2"
+    "tape": "^4.6.2",
+    "tsup": "^2.1.0",
+    "typescript": "^3.9.7"
   },
   "scripts": {
-    "test": "standard && node test.js"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",

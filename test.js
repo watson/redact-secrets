@@ -1,6 +1,6 @@
 const test = require('tape')
 const clone = require('clone')
-const redact = require('./')
+const redact = require('./dist').redactSecrets;
 
 test('redact.map', function (t) {
   const input = {
