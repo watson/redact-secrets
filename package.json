@@ -19,7 +19,6 @@
     "dist"
   ],
   "scripts": {
-    "prepack": "npm run build",
     "prepare": "npm run build",
     "build": "./node_modules/.bin/tsup index.ts --dts",
     "test": "node test.js"
