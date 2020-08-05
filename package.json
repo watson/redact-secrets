@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "prepare": "npm run build",
-    "build": "./node_modules/.bin/tsup index.ts --dts",
+    "build": "./node_modules/.bin/tsup index.ts --dts-bundle",
     "test": "node test.js"
   },
   "repository": {

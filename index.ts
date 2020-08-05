@@ -1,7 +1,7 @@
 import traverse from 'traverse';
 import * as isSecret from 'is-secret';
 
-export const redactSecrets = function (redacted, options = {
+export const redactSecrets = function (redacted: string, options = {
   keys: [],
   values: []
 }) {
@@ -13,11 +13,14 @@ export const redactSecrets = function (redacted, options = {
     return isGenericSecret || isUserSecret
   };
 
-  const map = obj => traverse(obj).map(function (val) {
-    if (isRedactable(this.key, val)) {
-      this.update(redacted);
-    }
-  });
+  const map = <T>(obj: T) => {
+    const updated = traverse(obj).map(function (val) {
+      if (isRedactable(this.key, val)) {
+        this.update(redacted);
+      }
+    });
+    return updated as T;
+  };
 
   const forEach = obj => {
     traverse(obj).forEach(function (val) {
